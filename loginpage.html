@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loginpage</title>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <p class="error"></p>
+    <form action="" class="login">
+        <label for="email">Email :</label>
+        <input type="email" name="email" id="email" placeholder="Enter your email">
+        <br><br>
+        <label for="upw">Password: </label>
+        <input type="password" name="password" id="upw" placeholder="Password">
+        <br><br>
+        <input type="submit">
+    </form>
+    <script>
+        let user_email = document.querySelector("#email")
+        let user_password = document.querySelector("#upw")
+        let loginform = document.querySelector(".login")
+        let errormsg = document.querySelector(".error")
+
+        loginform.addEventListener("submit", validateloginform)
+
+        function validateloginform(e) {
+            e.preventDefault()
+            let mail = user_email.value
+            let password = user_password.value
+            let data1 = JSON.parse(localStorage.getItem("data"))
+            let arr = ["mail not found", "password is not matched", "login success"]
+            errormsg.innerHTML = arr[check(data1, mail, password)]
+
+
+
+        }
+        function check(data1, mail, password) {
+            let flag = 1
+            for (let t of data1) {
+                if (t.useremail == mail) {
+                    if (t.userpassword == password) {
+                        console.log(password);
+                        return 2
+                    }
+                    else {
+                        return 1
+                    }
+                    flag = 0
+                }                
+            }
+            if (flag == 1) {
+                return 0
+            }
+        }
+
+        function generateToken1(){
+            let token = crypto.randomUUID()   // extract 10 charcaters from it
+            let finaltoken=token.substring(0,10)
+        }
+        window.location.href="/chatgpt.html"
+    </script>
+</body>
+
+</html>
