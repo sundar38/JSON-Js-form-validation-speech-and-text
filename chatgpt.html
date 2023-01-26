@@ -9,16 +9,79 @@
 </head>
 
 <body>
-    <textarea name="" id="" cols="30" rows="10"></textarea>
-    <input type="submit">
+    <form action="" class="chatgpt">
+        <textarea name="question" id="typequestion" cols="30" rows="10"></textarea>
+        <br><br>
+        <input type="submit" value="submit">
+    </form>
+
+    <div class="printanswer">
+
+
+    </div>
+    <div class="printimage">
+
+
+    </div>
+    <div class="speak">
+
+
+    </div>
 
 </body>
 <script>
-    let arr=[
-    {question: "What is a dog" , answer: "Dog is a animal with 4 legs" , imageLink : "images/dog.jpg"},
-    {question: "What is a cat" , answer: "Cat is a animal with 4 legs" , imageLink : "images/cat.jpg"},
-    {question: "What is a laptop" , answer: "Laptop is a device with OS" , imageLink : "images/laptop.jpg"}
+    let arr = [
+        { question: "What is a dog", answer: "Dog is a animal with 4 legs", imageLink: "images/dog.jpg" },
+        { question: "What is a cat", answer: "Cat is a animal with 4 legs", imageLink: "images/cat.jpg" },
+        { question: "What is a laptop", answer: "Laptop is a device with OS", imageLink: "images/laptop.jpg" }
     ]
+    let chatgptform=document.querySelector(".chatgpt")
+    let question = document.querySelector("#typequestion")
+    let answer = document.querySelector(".printanswer")
+    let image = document.querySelector(".printimage")
+    chatgptform.addEventListener('submit', validatetextarea)
+
+
+    function validatetextarea(e) {
+        
+        let userquestion = question.value
+        // let useranswer=answer.value
+        // let userimage=image.src
+        e.preventDefault()
+        for (let t of arr) {
+            if (userquestion == t.question) {
+                let ans = document.createElement("p")
+                ans.setAttribute("class", "finalanswer")
+                ans.innerHTML = t.answer
+                answer.appendChild(ans)
+                let imagearea=document.createElement("img")
+                imagearea.src=t.imageLink
+                image.appendChild(imagearea)
+            }
+        }
+        let speaktext=document.querySelector(".speak")
+        let p=document.createElement("input")
+        p.type="text"
+        p.placeholder="Enter your token"
+        speaktext.appendChild(p)
+        
+        let btn=document.createElement("button")
+        
+        btn.innerHTML="speakText"
+        speaktext.appendChild(btn)
+        btn.addEventListener("click", sundargpt)
+    }
+    function sundargpt(answer){
+        let texttospeak=document.querySelector(".finalanswer")
+        let textspeak=texttospeak.innerHTML
+        let utter=new SpeechSynthesisUtterance()
+        utter.text=textspeak
+        utter.lang="en-US"
+        utter.volume=1
+
+        window.speechSynthesis.speak(utter)
+    }
+
 </script>
 
 </html>

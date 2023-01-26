@@ -39,7 +39,12 @@
             let data1 = JSON.parse(localStorage.getItem("data"))
             let arr = ["mail not found", "password is not matched", "login success"]
             errormsg.innerHTML = arr[check(data1, mail, password)]
-
+            let finaltoken1="token"
+            // window.location.href="/chatgpt.html"
+            data1[finaltoken1]=generateToken1()
+            console.log(data1);
+            arr.push(data1)
+            console.log(arr);
 
 
         }
@@ -65,8 +70,12 @@
         function generateToken1(){
             let token = crypto.randomUUID()   // extract 10 charcaters from it
             let finaltoken=token.substring(0,10)
+            console.log(finaltoken);
+            // data1[token]=finaltoken
+            // console.log(data1);
+            return finaltoken
         }
-        window.location.href="/chatgpt.html"
+        
     </script>
 </body>
 
