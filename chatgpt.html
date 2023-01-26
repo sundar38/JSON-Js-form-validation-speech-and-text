@@ -6,9 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat GPT</title>
+    <style>
+        .error{
+            color: red;
+        }
+    </style>
 </head>
 
 <body>
+    <p class="error"></p>
     <form action="" class="chatgpt">
         <textarea name="question" id="typequestion" cols="30" rows="10"></textarea>
         <br><br>
@@ -27,6 +33,9 @@
 
 
     </div>
+    <div class="afterspeak">
+
+    </div>
 
 </body>
 <script>
@@ -35,7 +44,7 @@
         { question: "What is a cat", answer: "Cat is a animal with 4 legs", imageLink: "images/cat.jpg" },
         { question: "What is a laptop", answer: "Laptop is a device with OS", imageLink: "images/laptop.jpg" }
     ]
-    let chatgptform=document.querySelector(".chatgpt")
+    let chatgptform = document.querySelector(".chatgpt")
     let question = document.querySelector("#typequestion")
     let answer = document.querySelector(".printanswer")
     let image = document.querySelector(".printimage")
@@ -43,7 +52,7 @@
 
 
     function validatetextarea(e) {
-        
+
         let userquestion = question.value
         // let useranswer=answer.value
         // let userimage=image.src
@@ -54,32 +63,68 @@
                 ans.setAttribute("class", "finalanswer")
                 ans.innerHTML = t.answer
                 answer.appendChild(ans)
-                let imagearea=document.createElement("img")
-                imagearea.src=t.imageLink
+                let imagearea = document.createElement("img")
+                imagearea.src = t.imageLink
                 image.appendChild(imagearea)
             }
         }
-        let speaktext=document.querySelector(".speak")
-        let p=document.createElement("input")
-        p.type="text"
-        p.placeholder="Enter your token"
+        let speaktext = document.querySelector(".speak")
+        let p = document.createElement("input")
+        p.type = "text"
+        p.setAttribute("class", "tokenenter")
+        p.placeholder = "Enter your token"
         speaktext.appendChild(p)
-        
-        let btn=document.createElement("button")
-        
-        btn.innerHTML="speakText"
+
+        let btn = document.createElement("button")
+
+        btn.innerHTML = "speakText"
         speaktext.appendChild(btn)
         btn.addEventListener("click", sundargpt)
     }
-    function sundargpt(answer){
-        let texttospeak=document.querySelector(".finalanswer")
-        let textspeak=texttospeak.innerHTML
-        let utter=new SpeechSynthesisUtterance()
-        utter.text=textspeak
-        utter.lang="en-US"
-        utter.volume=1
+    function sundargpt(answer) {
+        let texttospeak = document.querySelector(".finalanswer")
+        let entertoken = document.querySelector(".tokenenter")
+        let token_entered = entertoken.value
+        console.log(token_entered);
+        let data3 = JSON.parse(localStorage.getItem("data2"))
+        console.log(data3);
+        let errormsg=document.querySelector(".error")
+        let countofcalls=10
+        if (validatetoken(token_entered, data3) == true) {
+            countofcalls--
+            if(countofcalls==0){
+                errormsg.innerHTML="Speech to text call limit is exceeded"
+                return
+            }
+            let afterspeakvalue=document.querySelector(".afterspeak")
+            let p=document.createElement("p")  //enter no.of calls here
+            p.innerHTML=countofcalls
+            p.innerHTML=data3.username
 
-        window.speechSynthesis.speak(utter)
+            let textspeak = texttospeak.innerHTML
+            let utter = new SpeechSynthesisUtterance()
+            utter.text = textspeak
+            utter.lang = "en-US"
+            utter.volume = 1
+            window.speechSynthesis.speak(utter)
+
+        }
+        else{
+            
+            errormsg.innerHTML= "Your token is wrong"
+        }
+
+    }
+    function validatetoken(tokenenteres, data3) {
+        console.log(data3.token);
+        if (tokenenteres == data3.token) {
+            console.log(true);
+            return true
+        }
+        else {
+            console.log(false);
+            return false
+        }
     }
 
 </script>

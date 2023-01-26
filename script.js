@@ -35,7 +35,7 @@ function validateform(e){
     }
     else{
         errormsg.innerHTML="Form submitted successfully"
-        let obj = {id: id++, username, useremail , userpassword, token}
+        let obj = {id: id++, username, useremail , userpassword}
         arr.push(obj)
         console.log(arr);
         input_name.value=""
