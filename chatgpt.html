@@ -36,6 +36,7 @@
     <div class="afterspeak">
 
     </div>
+    
 
 </body>
 <script>
@@ -86,20 +87,31 @@
         let entertoken = document.querySelector(".tokenenter")
         let token_entered = entertoken.value
         console.log(token_entered);
-        let data3 = JSON.parse(localStorage.getItem("data2"))
+        let data3 = JSON.parse(localStorage.getItem("data"))
         console.log(data3);
         let errormsg=document.querySelector(".error")
         let countofcalls=10
         if (validatetoken(token_entered, data3) == true) {
             countofcalls--
+            console.log(countofcalls);
             if(countofcalls==0){
                 errormsg.innerHTML="Speech to text call limit is exceeded"
                 return
             }
             let afterspeakvalue=document.querySelector(".afterspeak")
             let p=document.createElement("p")  //enter no.of calls here
-            p.innerHTML=countofcalls
-            p.innerHTML=data3.username
+            
+            p.innerHTML=data3[0].username
+            afterspeakvalue.appendChild(p)
+            
+           
+
+
+            let p1=document.createElement("p")
+            p1.innerHTML=countofcalls
+            afterspeakvalue.appendChild(p1)
+
+            
 
             let textspeak = texttospeak.innerHTML
             let utter = new SpeechSynthesisUtterance()
@@ -109,15 +121,13 @@
             window.speechSynthesis.speak(utter)
 
         }
-        else{
-            
+        else{            
             errormsg.innerHTML= "Your token is wrong"
         }
-
     }
     function validatetoken(tokenenteres, data3) {
-        console.log(data3.token);
-        if (tokenenteres == data3.token) {
+        console.log(data3[0].token);
+        if (tokenenteres == data3[0].token) {
             console.log(true);
             return true
         }
